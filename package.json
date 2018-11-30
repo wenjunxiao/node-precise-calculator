@@ -1,0 +1,11 @@
+{
+  "name": "financial-calculator",
+  "version": "1.0.0",
+  "description": "Financial calculator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Wenjun Xiao",
+  "license": "MIT"
+}
