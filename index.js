@@ -1,1 +1,1 @@
-module.exports = require('./lib/calculator')
+module.exports = require('./lib/index')
