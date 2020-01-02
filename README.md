@@ -1,8 +1,8 @@
 # precise-calculator
 
 [![NPM version](https://img.shields.io/npm/v/precise-calculator.svg?style=flat-square)](https://www.npmjs.com/package/precise-calculator)
-[![Build status](https://img.shields.io/travis/wenjunxiao/precise-calculator.svg?style=flat-square)](https://travis-ci.org/wenjunxiao/precise-calculator)
-[![Test coverage](https://img.shields.io/coveralls/wenjunxiao/precise-calculator.svg?style=flat-square)](https://coveralls.io/github/wenjunxiao/precise-calculator)
+[![Build status](https://img.shields.io/travis/wenjunxiao/precise-calculator.svg?style=flat-square)](https://travis-ci.org/wenjunxiao/node-precise-calculator)
+[![Test coverage](https://img.shields.io/coveralls/wenjunxiao/node-precise-calculator.svg?style=flat-square)](https://coveralls.io/github/wenjunxiao/node-precise-calculator)
 [![Downloads](http://img.shields.io/npm/dm/precise-calculator.svg?style=flat-square)](https://npmjs.org/package/precise-calculator)
 
 Precise Calculator
