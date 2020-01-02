@@ -68,7 +68,7 @@ describe('calculator ::', function () {
       const d = { x: -2.12, y: 3.7, z: 1.2 }
       C.ccompile('(d.x + d.y * d.z) / (d.y - d.z)', 'd')(d).should.eql(0.928)
       const st = Date.now()
-      for (let i = 0; i < 100000; i++) {
+      for (let i = 0; i < 10000; i++) {
         C.ccompile('(d.x + d.y * d.z) / (d.y - d.z)', 'd')(d)
       }
       (Date.now() - st).should.below(1000)

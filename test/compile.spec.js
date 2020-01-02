@@ -33,7 +33,7 @@ describe('compile ::', function () {
     it('invalid argument `1+1`', () => {
       (function () {
         compile('1 + 1a', '1a')
-      }).should.throw(/Invalid or unexpected token/)
+      }).should.throw(/\$\(1\)\.add\(1a\)\.v\(\)/)
     })
 
     it('invalid round', () => {
