@@ -1,5 +1,10 @@
 # precise-calculator
 
+[![NPM version](https://img.shields.io/npm/v/precise-calculator.svg?style=flat-square)](https://www.npmjs.com/package/precise-calculator)
+[![Build status](https://img.shields.io/travis/wenjunxiao/precise-calculator.svg?style=flat-square)](https://travis-ci.org/wenjunxiao/precise-calculator)
+[![Test coverage](https://img.shields.io/coveralls/wenjunxiao/precise-calculator.svg?style=flat-square)](https://coveralls.io/github/wenjunxiao/precise-calculator)
+[![Downloads](http://img.shields.io/npm/dm/precise-calculator.svg?style=flat-square)](https://npmjs.org/package/precise-calculator)
+
 Precise Calculator
 
 ## Usage
@@ -171,5 +176,5 @@ $C.compile('((d.x + d.y){.2R} * d.z){.1R}', 'd')(d) // 7.4
   - `S`/`s` specify the result to return a string, and can be used with rounding mode, 
     `(1.123){S}` means `$C(1.123).vs()`, `(1.123){.2Rs}` means `$C(1.123).r(2).vs()`
   - `e` specify the result to return a scientific, `(1.123){e}` means `$C(1.123).ve()`
-  - `P` specify the result as a percentage with the suffix `%`, `(1.123){P}` means `$C(1.123).mul(100).format('.','','%')`
+  - `P` specify the result as a percentage with the suffix `%`, `(1.123){.P}` means `$C(1.123).mul(100).format('.','','%')`
 * `suffix` used in `format()` as `suffix` argument, supports `%`

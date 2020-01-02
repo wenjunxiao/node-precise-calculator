@@ -70,6 +70,7 @@ describe('compile ::', function () {
       compile('(3.1415){$##0.00s%}').exp.should.eql("$(3.1415).format('##0.00', '$', '%')")
       compile('(1234.567){$##0.00s%}')().should.eql("$1,234.56%")
       compile('(1234.567){$##0.00R%}')().should.eql("$1,234.57%")
+      compile('(3.1415){.P}').exp.should.eql("$(3.1415).mul(100).format('.', '', '%')")
     })
     it('debug compile', (cb) => {
       process.env.DEBUG_CALCULATOR_COMPILE = true
