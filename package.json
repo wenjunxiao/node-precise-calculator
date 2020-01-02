@@ -25,6 +25,7 @@
     "url": "https://github.com/wenjunxiao/node-precise-calculator.git"
   },
   "devDependencies": {
+    "coveralls": "^3.0.9",
     "istanbul": "^0.4.5",
     "mocha": "^6.2.2",
     "should": "^13.2.3"
