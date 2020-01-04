@@ -1,5 +1,6 @@
 const calculator = require('../lib/calculator')
 const {
+  resetDebug,
   compile
 } = require('../lib/compile')
 
@@ -71,22 +72,24 @@ describe('compile ::', function () {
       compile('(1234.567){$##0.00s%}')().should.eql("$1,234.56%")
       compile('(1234.567){$##0.00R%}')().should.eql("$1,234.57%")
       compile('(3.1415){.P}').exp.should.eql("$(3.1415).mul(100).format('.', '', '%')")
+      compile('abs(1 - 2)').exp.should.eql("$.$abs($(1).sub(2)).v()")
     })
     it('debug compile', (cb) => {
-      process.env.DEBUG_CALCULATOR_COMPILE = true
       const error = console.error
-      console.error = (...args) => {
-        const exp = args.pop()
-        const expr = args.pop()
-        expr.should.eql('1 + 1')
-        exp.should.eql('$(1).add(1).v()')
-        console.error = error
-        cb()
+      console.error = (fmt, ...args) => {
+        if (/\[compile\]/.test(fmt)) {
+          const exp = args.pop()
+          const expr = args.pop()
+          expr.should.eql('1 + 1')
+          exp.should.eql('$(1).add(1).v()')
+          console.error = error
+          cb()
+        }        
       }
+      resetDebug(true)
       compile('1 + 1')
-      delete process.env.DEBUG_CALCULATOR_COMPILE
+      resetDebug(false)
     })
-
     it('inspect compile result', () => {
       require('util').inspect(compile('1 + 1')).should.eql("'() => $(1).add(1).v()'")
     })

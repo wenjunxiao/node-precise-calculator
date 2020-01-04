@@ -55,6 +55,17 @@ describe('calculator ::', function () {
     C.min(2.1, 3.1, C(1.1)).should.eql(1.1)
   })
 
+  it('pow(x,y)', ()=>{
+    C.pow(3, 2).should.eql(9)
+    C.$pow(C(3), 2).v().should.eql(9)
+    C.$pow(3, C(2)).v().should.eql(9)
+  })
+  it('abs(x)', ()=>{
+    C.abs(1).should.eql(1)
+    C.abs(-1).should.eql(1)
+    C.$abs(-1).v().should.eql(1)
+    C.$abs(C(-1)).v().should.eql(1)
+  })
   describe('ccompile()', () => {
     it('ccompile()', () => {
       const fn1 = C.ccompile('1 + 1')

@@ -109,6 +109,23 @@ $C(3.146).floor(2) // 3.14
 $C(3.151).fv(2) // 3.15
 ```
 
+### `r(precision)`/`ru(precision)`/`re(precision)`/`rc(precision)`/`rf(precision)`
+
+  Use rounding method to round and return itself, usually in the middle of calculations
+```js
+$C(1).div(8).r(2).mul(5).v() // 0.65
+$C(1).div(8).ru(2).mul(5).v() // 0.65
+$C(1).div(8).re(2).mul(5).v() // 0.6
+$C(1).div(8).rc(2).mul(5).v() // 0.65
+$C(1).div(8).rf(2).mul(5).v() // 0.6
+```
+
+- `r` use default rounding method
+- `ru` use round-half-up rounding method
+- `re` use round-half-even rounding method
+- `rc` use ceil rounding method
+- `rf` use floor rounding method
+
 ### `format(fmt='##0.00', prefix='', suffix='')`
   Format the value with special formatter
 ```js
@@ -158,6 +175,29 @@ $C.compile('((d.x + d.y) * d.z)', 'd')(d) // 7.362
 $C.compile('((d.x + d.y) * d.z){.2R}', 'd')(d) // 7.36
 $C.compile('((d.x + d.y){.2R} * d.z)', 'd')(d) // 7.35
 $C.compile('((d.x + d.y){.2R} * d.z){.1R}', 'd')(d) // 7.4
+```
+
+#### Functions supportted in expression
+
+  Built-in functions
+- `max(x, y, ..., z)` Returns max value of arguments
+- `min(x, y, ..., z)` Returns min value of arguments
+- `pow(x, y)` Returns the value of a base expression taken to a specified power
+- `abs(x)` Returns the absolute value of a number
+
+```js
+$C.compile('1 + pow(3, 2)') // 10
+$C.compile('1 + max(3, 2)') // 4
+$C.compile('1 + min(3, 2)') // 3
+```
+  Extend functions, should define a pair of functions, `name()` and `$name()`.
+  The arguments and return values of functions that start with `$` are instances of Calculator
+
+```js
+$C.square = (x)=>Math.pow(x,2)
+$C.$square = ($x)=>$C(Math.pow($x,2))
+1 + square(2) // 5
+1 + square(1 + 1) // 5
 ```
 
 ### Expression settings
