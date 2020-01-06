@@ -641,7 +641,13 @@ describe('Calculator ::', function () {
       (`1 + ${C(1)}`).should.eql("1 + 1")
     })
   })
-
+  it('toJSON()', () => {
+    JSON.stringify({ a: C(3.14) }).should.eql('{"a":3.14}')
+  })
+  it('inspect()', () => {
+    require('util').inspect({ a: C(3.14) }).should.eql('{ a: 3.14 }')
+    require('util').inspect(C(3.14)).should.eql('3.14')
+  })
   describe('运算优先级', () => {
     it('6 + 3 - 4 * 5 / 2 = -1', () => {
       C(6).add(3).$sub(C(4).mul(5).div(2)).v().should.eql(-1)
