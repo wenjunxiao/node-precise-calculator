@@ -55,18 +55,18 @@ describe('calculator ::', function () {
     C.min(2.1, 3.1, C(1.1)).should.eql(1.1)
   })
 
-  it('pow(x,y)', ()=>{
+  it('pow(x,y)', () => {
     C.pow(3, 2).should.eql(9)
     C.$pow(C(3), 2).v().should.eql(9)
     C.$pow(3, C(2)).v().should.eql(9)
   })
-  it('abs(x)', ()=>{
+  it('abs(x)', () => {
     C.abs(1).should.eql(1)
     C.abs(-1).should.eql(1)
     C.$abs(-1).v().should.eql(1)
     C.$abs(C(-1)).v().should.eql(1)
   })
-  describe('ccompile()', () => {
+  describe('compile()', () => {
     it('ccompile()', () => {
       const fn1 = C.ccompile('1 + 1')
       const fn2 = C.ccompile('1 + 1')
@@ -74,6 +74,17 @@ describe('calculator ::', function () {
       const fn3 = C.compile('1 + 1')
       const fn4 = C.compile('1 + 1')
       fn3.should.not.be.exactly(fn4)
+    })
+    it('ocompile()', () => {
+      const fn1 = C.ocompile('1 + 1')
+      const fn2 = C.ocompile('1 + 1')
+      fn1.should.be.exactly(fn2)
+      const fn3 = C.ocompile('x * (x + y)')
+      const fn4 = C.ocompile('x * (x + y)')
+      fn3.should.be.exactly(fn4)
+      fn3({ x: 2, y: 3 }).should.eql(10)
+      fn3.toString().should.eql('({x,y}) => $(x).$mul($(x).add(y)).v()')
+      require('util').inspect(fn3).should.eql("'({x,y}) => $(x).$mul($(x).add(y)).v()'")
     })
     it('performance', () => {
       const d = { x: -2.12, y: 3.7, z: 1.2 }

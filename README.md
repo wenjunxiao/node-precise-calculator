@@ -152,20 +152,24 @@ $C(1).add(2).vs() // string value `3`
 $C(10).mul(100).ve() // string value `1e+3`
 ```
 
-### `compile(expr, ...args)`/`ccompile(expr, ...args)`
+### `compile(expr, ...args)`/`ccompile(expr, ...args)`/`cc(expr, ...args)`/`ocompile(expr)`/`oc(expr)`
 
-  Compile the arithmetic expression to corresponding function. There must be spaces before and after the operator in the expression. `ccompile` cached the compilation result for reuse.
+  Compile the arithmetic expression to corresponding function. There must be spaces before and after the operator in the expression.
+  `ccompile()`/`cc()` compiled and cached the compilation result for reuse.
+  `ocompile()`/`oc()` compiled as a function with a object argument and cached the compilation result for reuse.
 
 ```js
 $C.compile('1 +1') // invalid expression
 $C.compile('1+1') // invalid expression
 
 const formula1 = $C.compile('1 + 1') // valid expression
-const formula2 = $C.compile('(x + y) * z', 'x', 'y', 'z') // valid expression
+const formula2 = $C.ccompile('(x + y) * z', 'x', 'y', 'z') // valid expression
+const formula3 = $C.ocompile('(x + y) * z') // valid expression
 
 // Execute formula
 console.log(formula1()) // 2
 console.log(formula2(1, 2, 3)) // 9
+console.log(formula3({x: 1, y: 2, z: 3})) // 9
 ```
 
   More settings can be set in curly braces after all parentheses. Such as, rounding, formatting, etc.

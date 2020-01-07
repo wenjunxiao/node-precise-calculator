@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const C = require('../lib/index')
+const C = require('../index')
 
 const pos = process.argv.indexOf('--listen')
 if (pos > 0) {
@@ -66,6 +66,9 @@ rl.on('line', line => {
     if (/(^.*?)\s*\/\//.test(line)) {
       line = RegExp.$1
     }
+    if (/^console\.\w+\((.*)\);?$/i.test(line)) {
+      line = RegExp.$1
+    }
     try {
       if (/^\$C?(\W|$)/.test(line)) {
         console.log(vm.runInContext(`require('util').inspect(${line})`, ctx))
@@ -73,7 +76,7 @@ rl.on('line', line => {
         console.log(C.compile(RegExp.$1))
       } else if (/^(?:(?:let|const|var)\s+)?([\w.]+\s*=\s*.*)$/.test(line)) {
         vm.runInContext(RegExp.$1, ctx)
-      } else if (/^\w+$/.test(line)) {
+      } else if (/^\w+$/.test(line) || /^(\w+)\(/.test(line) && ctx[RegExp.$1]) {
         console.log(vm.runInContext(line, ctx))
       } else {
         const args = Object.keys(ctx).filter(s => ignores.indexOf(s) < 0)
