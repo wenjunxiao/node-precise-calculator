@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 const C = require('../index')
+const { resetDebug } = require('../lib/compile')
 
+resetDebug(process.env.DEBUG_CALCULATOR_COMPILE)
 const pos = process.argv.indexOf('--listen')
 if (pos > 0) {
   const http = require('http')

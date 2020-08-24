@@ -109,7 +109,7 @@ $C(3.146).floor(2) // 3.14
 $C(3.151).fv(2) // 3.15
 ```
 
-### `r(precision)`/`ru(precision)`/`re(precision)`/`rc(precision)`/`rf(precision)`
+#### `r(precision)`/`ru(precision)`/`re(precision)`/`rc(precision)`/`rf(precision)`
 
   Use rounding method to round and return itself, usually in the middle of calculations
 ```js
@@ -126,7 +126,7 @@ $C(1).div(8).rf(2).mul(5).v() // 0.6
 - `rc` use ceil rounding method
 - `rf` use floor rounding method
 
-### `format(fmt='##0.00', prefix='', suffix='')`
+#### `format(fmt='##0.00', prefix='', suffix='')`
   Format the value with special formatter
 ```js
 $C(1234.1).format('##0.00') // 1,234.10
@@ -134,19 +134,19 @@ $C(1234.1).format('##0.00', '$') // $1,234.10
 $C(12.3).format('##0.00', '', '%') // 12.30%
 ```
 
-### `v()`
+#### `v()`
   Return the number value of current result.
 ```js
 $C(1).add(2).v() // number value `3`
 ```
 
-### `vs()`
+#### `vs()`
   Return the string value of current result.
 ```js
 $C(1).add(2).vs() // string value `3`
 ```
 
-### `ve()`
+#### `ve()`
   Return the scientific notation value of current result.
 ```js
 $C(10).mul(100).ve() // string value `1e+3`
@@ -204,7 +204,7 @@ $C.$square = ($x)=>$C(Math.pow($x,2))
 1 + square(1 + 1) // 5
 ```
 
-### Expression settings
+#### Expression settings
 
   Settings arguments`{[prefix][format][mode][suffix]}`
 
@@ -222,3 +222,42 @@ $C.$square = ($x)=>$C(Math.pow($x,2))
   - `e` specify the result to return a scientific, `(1.123){e}` means `$C(1.123).ve()`
   - `P` specify the result as a percentage with the suffix `%`, `(1.123){.P}` means `$C(1.123).mul(100).format('.','','%')`
 * `suffix` used in `format()` as `suffix` argument, supports `%`
+
+#### Special format
+
+* Support front currency, for example
+```js
+$C.ocompile('$(1.1 + 1.2)') // $2.3
+$C.ocompile('¥(1.1 + 1.2)') // ¥2.3
+```
+* Support function alias, for example`(...).round(2)`
+```js
+$C.ocompile('(1.1 + 1.2).round(2)') // $C(1.1).add(1.2).r(2).v()
+$C.ocompile('(1.1 + 1.2).upRound(2)') // $C(1.1).add(1.2).ru(2).v()
+$C.ocompile('(1.1 + 1.2).evenRound(2)') // $C(1.1).add(1.2).re(2).v()
+$C.ocompile('(1.1 + 1.2).ceil(2)') // $C(1.1).add(1.2).rc(2).v()
+$C.ocompile('(1.1 + 1.2).floor(2)') // $C(1.1).add(1.2).rf(2).v()
+```
+
+### `$compile(expr, ...args)`/`$ccompile(expr, ...args)`/`$cc(expr, ...args)`/`$ocompile(expr)`/`$oc(expr)`
+
+  Compile the arithmetic expression to corresponding function, which the function's result is `Calculator`. Used to calculate intermediate results, so formatting cannot be used.
+```js
+const fn = $C.$ocompile('((x + y) * z){.2R}') // $(x).add(y).mul(z).r(2)
+const result = fn({x: 1, y: 2, z: 3}) // result is instanceof Calculator
+result.format('##0.00') // 9.00
+result.format('##0.0', '$') // $9.0
+```
+
+### `eval(expr, ...args)`
+
+  Calculate the value of the expression. First half of the `args` is the name, and the second half is the value.
+```js
+$C.eval('x + y', 'x', 'y', 1, 2) // 3
+$C.eval('1 + 2') // 3
+$C.eval('a.x + a.y', 'a', {x:1, y:2}) // 3
+```
+
+### `withStrict()/withoutStrict()`
+
+  Use or not use strict mode. With strict mode, will check the input value whther is a number by `isNaN`

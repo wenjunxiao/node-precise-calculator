@@ -1,7 +1,8 @@
 const calculator = require('../lib/calculator')
 const {
   resetDebug,
-  compile
+  compile,
+  $compile
 } = require('../lib/compile')
 
 describe('compile ::', function () {
@@ -92,6 +93,23 @@ describe('compile ::', function () {
     })
     it('inspect compile result', () => {
       require('util').inspect(compile('1 + 1')).should.eql("'() => $(1).add(1).v()'")
+    })
+    it('special compile', () => {
+      compile('(3.1415).round(2)').exp.should.eql("$(3.1415).r(2).v()");
+      (function(){
+        compile('(3.1415).test(2)')
+      }).should.throw(/Unsupported format alias/)
+    })
+  })
+
+  describe('$compile()', () => {
+    it('max(3)', () => {
+      $compile('max(3)').exp.should.eql('$.max(3)')
+    })
+    it('cannot have format', () => {
+      (function(){
+        $compile('max(3){.2}').exp.should.eql('$.max(3)')
+      }).should.throw(/The expression is not allowed/)
     })
   })
 })

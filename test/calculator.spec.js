@@ -1,4 +1,5 @@
 const C = require('../lib/index')
+C.withoutStrict().withStrict();
 
 describe('Calculator ::', function () {
   describe('add()', () => {
@@ -648,6 +649,26 @@ describe('Calculator ::', function () {
     require('util').inspect({ a: C(3.14) }).should.eql('{ a: 3.14 }')
     require('util').inspect(C(3.14)).should.eql('3.14')
   })
+  it('isZero()', ()=>{
+    C(0).isZero().should.eql(true);
+    C(1).isZero().should.eql(false);
+    C(-1).isZero().should.eql(false);
+  })
+  it('positive()', ()=>{
+    C(0).positive().should.eql(false);
+    C(1).positive().should.eql(true);
+    C(-1).positive().should.eql(false);
+  })
+  it('negative()', ()=>{
+    C(0).negative().should.eql(false);
+    C(1).negative().should.eql(false);
+    C(-1).negative().should.eql(true);
+  })
+  it('abs()', ()=>{
+    C(0).abs().v().should.eql(0);
+    C(1).abs().v().should.eql(1);
+    C(-1).abs().v().should.eql(1);
+  })
   describe('运算优先级', () => {
     it('6 + 3 - 4 * 5 / 2 = -1', () => {
       C(6).add(3).$sub(C(4).mul(5).div(2)).v().should.eql(-1)
@@ -671,6 +692,34 @@ describe('Calculator ::', function () {
     })
     it('(6 + max(3, 4)) = 10', () => {
       C.compile('(6 + max(3, 4))')().should.eql(10)
+    })
+  })
+
+  describe('Strict mode', ()=>{
+    it('Cannot use unknown field', ()=>{
+      var data = {};
+      (function(){
+        C(data.x).add(data.y)
+      }).should.throw(/Invalid/);
+      (function(){
+        C.strict(data.x).add(data.y)
+      }).should.throw(/Invalid/);
+    })
+
+    it('`$add/$sub/$div/$mul` Cannot use not calculator', ()=>{
+      var data = {x: 10};
+      (function(){
+        C(0).$add(data)
+      }).should.throw(/Invalid/);
+      (function(){
+        C(0).$sub(data)
+      }).should.throw(/Invalid/);
+      (function(){
+        C(0).$mul(data)
+      }).should.throw(/Invalid/);
+      (function(){
+        C(0).$div(data)
+      }).should.throw(/Invalid/);
     })
   })
 })
