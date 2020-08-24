@@ -1,6 +1,6 @@
 {
   "name": "precise-calculator",
-  "version": "2.0.7",
+  "version": "3.0.0",
   "description": "Financial precise calculator",
   "main": "index.js",
   "browser": "./dist/calculator.min.js",

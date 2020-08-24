@@ -126,13 +126,25 @@ $C(1).div(8).rf(2).mul(5).v() // 0.6
 - `rc` use ceil rounding method
 - `rf` use floor rounding method
 
-#### `format(fmt='##0.00', prefix='', suffix='')`
-  Format the value with special formatter
+#### `format(fmt='#,##0.00', prefix='', suffix='')/fmt(fmt='#,##0.00', prefix='', suffix='')`
+  Format the value with special formatter. format only, no round, if you want round please round before format.
 ```js
-$C(1234.1).format('##0.00') // 1,234.10
-$C(1234.1).format('##0.00', '$') // $1,234.10
-$C(12.3).format('##0.00', '', '%') // 12.30%
+$C(1234.1).format('#,##0.00') // 1,234.10
+$C(1234.1).format('#,##0.00', '$') // $1,234.10
+$C(12.3).format('#,##0.00', '', '%') // 12.30%
 ```
+
+#### `thousands(precision=2)`
+  Format use thousands sperator.
+```js
+$C(1234.1).format('#,##0.00') // 1,234.10
+$C(1234.1).format('#,##0.00', '$') // $1,234.10
+$C(12.3).format('#,##0.00', '', '%') // 12.30%
+```
+
+#### `currency(currency)`
+
+  Format use thousands sperator and with prefix `currency`.
 
 #### `v()`
   Return the number value of current result.
@@ -210,7 +222,7 @@ $C.$square = ($x)=>$C(Math.pow($x,2))
 
 * `prefix` used in `format()` as `prefix` argument, supports `$¥`
 * `format` used in `format()`, and rouding methods if there is any rounding `mode`. 
-  Supports two formats, standard format(`##0`,`##0.00`,`.00`) and digital mode(`3`, `3.2`, `.2`)
+  Supports two formats, standard format(`#,##0`,`#,##0.00`,`.00`) and digital mode(`3`, `3.2`, `.2`)
 * `mode` rounding mode:
   - `R` use default rounding method, `(1.123){.2R}` means `$C(1.123).r(2).v()`
   - `U` use round-half-up method, `(1.123){.2U}` means `$C(1.123).ru(2).v()`
@@ -245,8 +257,8 @@ $C.ocompile('(1.1 + 1.2).floor(2)') // $C(1.1).add(1.2).rf(2).v()
 ```js
 const fn = $C.$ocompile('((x + y) * z){.2R}') // $(x).add(y).mul(z).r(2)
 const result = fn({x: 1, y: 2, z: 3}) // result is instanceof Calculator
-result.format('##0.00') // 9.00
-result.format('##0.0', '$') // $9.0
+result.format('#,##0.00') // 9.00
+result.format('#,##0.0', '$') // $9.0
 ```
 
 ### `eval(expr, ...args)`
