@@ -627,6 +627,13 @@ describe('Calculator ::', function () {
     C('-456789.125').currency('', true).should.eql('-456,789.12');
   })
 
+  it('signed()', () => {
+    C('456789.123').signed('$').should.eql('$+456789.12');
+    C('456789.1').signed('$').should.eql('$+456789.10');
+    C('456789.123').signed().should.eql('+456789.12');
+    C('-456789.125').signed().should.eql('-456789.12');
+  })
+
   describe('debug()', () => {
     it('debug()', (cb) => {
       const fn = (v, p) => {

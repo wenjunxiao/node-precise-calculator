@@ -146,6 +146,9 @@ $C(12.3).format('#,##0.00', '', '%') // 12.30%
 
   Format use thousands sperator and with prefix `currency`.
 
+#### `signed(prefix='')`
+  Force sign even for positive numbers.
+
 #### `v()/value()`
   Return the number value of current result.
 ```js
