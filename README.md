@@ -142,14 +142,15 @@ $C(1234.1).format('#,##0.00', '$') // $1,234.10
 $C(12.3).format('#,##0.00', '', '%') // 12.30%
 ```
 
-#### `currency(currency)`
+#### `currency(currency, positiveSign=false)`
 
   Format use thousands sperator and with prefix `currency`.
 
-#### `v()`
+#### `v()/value()`
   Return the number value of current result.
 ```js
 $C(1).add(2).v() // number value `3`
+$C(1).add(2).value() // number value `3`
 ```
 
 #### `vs()`

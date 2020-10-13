@@ -621,6 +621,10 @@ describe('Calculator ::', function () {
   it('currency()', () => {
     C('456789.123').currency('$').should.eql('$456,789.12')
     C('456789.125').currency('$').should.eql('$456,789.13')
+    C('456789.125').currency('$', true).should.eql('$+456,789.13');
+    C('-456789.125').currency('$', true).should.eql('$-456,789.12');
+    C('456789.125').currency('', true).should.eql('+456,789.13');
+    C('-456789.125').currency('', true).should.eql('-456,789.12');
   })
 
   describe('debug()', () => {
