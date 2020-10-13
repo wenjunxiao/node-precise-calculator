@@ -634,6 +634,14 @@ describe('Calculator ::', function () {
     C('-456789.125').signed().should.eql('-456789.12');
   })
 
+  it('unsigned()', () => {
+    C('456789.123').unsigned('$').should.eql('$456789.12');
+    C('456789.1').unsigned('$').should.eql('$456789.10');
+    C('456789.123').unsigned().should.eql('456789.12');
+    C('-456789.125').unsigned().should.eql('456789.12');
+    C('-456789.126').unsigned().should.eql('456789.13');
+  })
+
   describe('debug()', () => {
     it('debug()', (cb) => {
       const fn = (v, p) => {
