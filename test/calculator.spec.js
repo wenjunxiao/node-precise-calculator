@@ -161,7 +161,7 @@ describe('Calculator ::', function () {
       C.compile('1.00e5 * -2.00e4')().should.eql(-2000000000)
       C.compile('-1.00e5 * 2.00e4')().should.eql(-2000000000)
       C.compile('(1.00e5 * -2.00e4){s}')().should.eql('-2000000000')
-      C.compile('(1.00e5 * -2.00e4){e}')().should.eql('-2e+10')
+      C.compile('(1.00e5 * -2.00e4){e}')().should.eql('-2e+9')
     })
   })
 
@@ -381,19 +381,25 @@ describe('Calculator ::', function () {
       C(3.1415926535).uv().should.eql(3)
       C(20).div(0.000005).ru(0).v().should.eql(4000000)
       C(20).div(0.000005).ru().v().should.eql(4000000)
+      C(-1.23).mul(0.1).ru(2).v().should.eql(-0.12)
+      C(-1.25).mul(0.1).ru(2).v().should.eql(-0.13)
       C(3.1415926535).ev(0).should.eql(3)
       C(3.1415926535).ev().should.eql(3)
       C(20).div(0.000005).re(0).v().should.eql(4000000)
       C(20).div(0.000005).re().v().should.eql(4000000)
+      C(-1.25).mul(0.1).re(2).v().should.eql(-0.12)
+      C(-1.26).mul(0.1).re(2).v().should.eql(-0.13)
       C(3.1415926535).cv(0).should.eql(4)
       C(3.1415926535).cv().should.eql(4)
       C(20).div(0.000005).cv(2).should.eql(4000000)
       C(20).div(0.000005).rc(0).v().should.eql(4000000)
       C(20).div(0.000005).rc().v().should.eql(4000000)
+      C(-1.22).mul(0.1).rc(2).v().should.eql(-0.13)
       C(3.1415926535).fv(0).should.eql(3)
       C(3.1415926535).fv().should.eql(3)
       C(20).div(0.000005).rf(0).v().should.eql(4000000)
       C(20).div(0.000005).rf().v().should.eql(4000000)
+      C(-1.26).mul(0.1).rf(2).v().should.eql(-0.12)
       C.compile('(20 / 0.000005){R}')().should.eql(4000000)
       C.compile('(20 / 0.000005){RS}')().should.eql('4000000')
       C.compile('(20 / 0.000005){U}')().should.eql(4000000)
@@ -442,7 +448,7 @@ describe('Calculator ::', function () {
       C(3.1415926535).cv(2).should.eql(3.15)
       C(3.1415926535).rc(2).v().should.eql(3.15)
       C(0.001).rc(2).v().should.eql(0.01)
-      C(0.0009).rc(2).v().should.eql(0)
+      C(0.0009).rc(2).v().should.eql(0.01)
       C(3.1415926535).fv(2).should.eql(3.14)
       C(3.1415926535).rf(2).v().should.eql(3.14)
       C(0.009).rf(2).v().should.eql(0)
@@ -699,6 +705,61 @@ describe('Calculator ::', function () {
     C(1).abs().v().should.eql(1);
     C(-1).abs().v().should.eql(1);
   })
+  it('Custom value', ()=>{
+    C.Calculator.prototype.custom = function (fn) {
+      fn.call(this);
+      return this;
+    };
+    C(200000000000).mul(10000000000).custom(function(){
+     this._p = 2;
+    }).vs().should.eql('20000000000000000000');
+    C(200000000000).mul(10000000000).custom(function(){
+      this._p = 2;
+     }).v().should.eql(20000000000000000000);
+     C(213000000000).mul(10000000000).custom(function(){
+      this._p = 2;
+    }).vs().should.eql('21300000000000000000');
+    C(213000000000).mul(10000000000).custom(function(){
+      this._p = 2;
+    }).v().should.eql(21300000000000000000);
+    C(213000000000).mul(10000000000).custom(function(){
+      this._p = 23;
+    }).vs().should.eql('0.0213');
+    C(213000000000).mul(10000000000).custom(function(){
+      this._p = -2;
+    }).vs().should.eql('213000000000000000000000')
+    C(213000000000).mul(10000000000).custom(function(){
+      this._p = -2;
+    }).v().should.eql(213000000000000000000000)
+    
+
+    C(-200000000000).mul(10000000000).custom(function(){
+      this._p = 2;
+     }).vs().should.eql('-20000000000000000000');
+     C(200000000000).mul(-10000000000).custom(function(){
+       this._p = 2;
+      }).v().should.eql(-20000000000000000000);
+      C(-213000000000).mul(10000000000).custom(function(){
+       this._p = 2;
+     }).vs().should.eql('-21300000000000000000');
+     C(213000000000).mul(-10000000000).custom(function(){
+       this._p = 2;
+     }).v().should.eql(-21300000000000000000);
+     C(-213000000000).mul(10000000000).custom(function(){
+       this._p = 23;
+     }).vs().should.eql('-0.0213');
+     C(-213000000000).mul(10000000000).custom(function(){
+       this._p = -2;
+     }).vs().should.eql('-213000000000000000000000')
+     C(213000000000).mul(-10000000000).custom(function(){
+       this._p = -2;
+     }).v().should.eql(-213000000000000000000000)
+
+     C({
+       _v: 213000000000000000000000,
+       _p: 10,
+     })
+  });
   describe('运算优先级', () => {
     it('6 + 3 - 4 * 5 / 2 = -1', () => {
       C(6).add(3).$sub(C(4).mul(5).div(2)).v().should.eql(-1)
